@@ -6,6 +6,8 @@ function App(){
     const [question, setQuestion] = useState("")
     const [fileName, setFileName] = useState("")
     const fileInputRef = useRef(null);
+    const [pdfloaded, setPdfLoaded] = useState(false)
+
 
     async function SendQuestion(){
         const response = await fetch(`${import.meta.env.VITE_API_URL}/chat`, {
@@ -31,6 +33,7 @@ function App(){
             method: "POST",
             body: formData
         })
+        setPdfLoaded(true)
         const data = await response.json()
         setMessages([...messages,
             {role: "assistant", content: "✅ PDF cargado: " + data.filename}
@@ -53,6 +56,11 @@ function App(){
                 <button className="select-btn" onClick={() => fileInputRef.current.click()}>
                     📄 {fileName ? fileName : "Seleccionar PDF"}
                 </button>
+                {pdfloaded && (
+                    <button className="change-btn" onClick={() => fileInputRef.current.click()}>
+                        🔄 Cambiar PDF
+                    </button>
+                )}
             </div>
         </div>
 
@@ -68,6 +76,7 @@ function App(){
             <textarea 
                 placeholder='Escribe tu pregunta sobre el documento...'
                 value={question}
+
                 onChange={(e) => setQuestion(e.target.value)}
                 onKeyDown={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -76,7 +85,7 @@ function App(){
                     }
                 }}
             ></textarea>
-            <button onClick={SendQuestion}>➤</button>
+            <button onClick={SendQuestion} disabled={!pdfloaded}>➤</button>
         </div>
 
     </div>
