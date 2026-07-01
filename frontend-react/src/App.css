@@ -135,8 +135,8 @@ body {
   font-size: 14px;
   font-family: inherit;
   resize: none;
-  min-height: 48px;
-  max-height: 120px;
+  min-height: 40px;
+  max-height: 95px;
   outline: none;
   transition: border-color 0.2s;
   line-height: 1.5;
